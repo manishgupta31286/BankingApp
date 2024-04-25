@@ -13,6 +13,8 @@ namespace BankingApp
         public AccountRepository()
         {
             _accounts = new List<Account>();
+            _accounts.Add(new Account { AccountNumber= "Sender1",Balance=1000 });
+            _accounts.Add(new Account { AccountNumber = "Recipient1", Balance = 2000 });
         }
 
         public Task<Account> GetAccountByNumber(string accountNumber)

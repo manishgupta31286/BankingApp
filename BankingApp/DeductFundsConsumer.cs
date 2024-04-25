@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,13 +25,14 @@ namespace BankingApp
 
             // Deduct funds from the sender's account
             await _accountService.DeductFunds(request.SenderAccountNumber, request.Amount);
-
+            
+            
             await _bus.Publish<FundsDeductedMessage>(new
             {
                 SenderAccountNumber = request.SenderAccountNumber,
                 RecipientAccountNumber = request.RecipientAccountNumber,
                 Amount = request.Amount
-            });
+            });            
         }
     }
 }

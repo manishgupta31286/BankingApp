@@ -30,6 +30,8 @@ namespace BankingApp
 
             // Update the account balance
             await _accountRepository.UpdateAccount(account);
+
+            Console.WriteLine($"funds debited, balance amount: {account.Balance}");
         }
 
         public async Task CreditFunds(string accountNumber, decimal amount)
@@ -46,6 +48,7 @@ namespace BankingApp
 
             // Update the account balance
             await _accountRepository.UpdateAccount(account);
+            Console.WriteLine($"funds credited, balance amount: {account.Balance}");
         }
     }
 }

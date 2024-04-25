@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BankingApp
 {
-    public class CreditFundsConsumer : IConsumer<FundsDeductedMessage>
+    public class CreditFundsConsumer : IConsumer<TransferRequestMessage>
     {
         private readonly IAccountService _accountService;
         private readonly IBus _bus;
@@ -19,7 +19,7 @@ namespace BankingApp
             _bus = bus;
         }
 
-        public async Task Consume(ConsumeContext<FundsDeductedMessage> context)
+        public async Task Consume(ConsumeContext<TransferRequestMessage> context)
         {
             var request = context.Message;
 

@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using BankingApp;
 using MassTransit;
+using System;
 
 Console.WriteLine("Hello, World!");
 
@@ -19,10 +20,14 @@ busControl.ConnectReceiveEndpoint("transfer-requested", e =>
     IAccountService accountService = new AccountService(new AccountRepository());
     var deductConsumer = new DeductFundsConsumer(accountService, busControl);
     e.Consumer(() => deductConsumer);
+
+    IAccountService accountService1 = new AccountService(new AccountRepository());
+    var creditConsumer = new CreditFundsConsumer(accountService1, busControl);
+    e.Consumer(() => creditConsumer);
 });
 
-
-//busControl.ConnectReceiveEndpoint("funds-deducted", e =>
+//"funds - deducted"
+//busControl.ConnectReceiveEndpoint("transfer-requested", e =>
 //{
 //    IAccountService accountService = new AccountService(new AccountRepository());
 //    var creditConsumer = new CreditFundsConsumer(accountService, busControl);
@@ -33,4 +38,7 @@ busControl.Start();
 
 ITransferService transferService = new TransferService(busControl);
 var task = transferService.InitiateTransfer(request);
+
+
 Console.ReadKey();
+
