@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BankingApp
 {
-    public class DeductFundsConsumer : IConsumer<TransferRequestMessage>
+    public class DeductFundsConsumer : IConsumer<TransferRequestMessage>,IConsumer<CreditFailedMessage>
     {
         private readonly IAccountService _accountService;
         private readonly IBus _bus;
@@ -30,6 +30,14 @@ namespace BankingApp
                 new FundsDeductedMessage(request.SenderAccountNumber,
                 request.RecipientAccountNumber,
                 request.Amount));
+        }
+
+        public async Task Consume(ConsumeContext<CreditFailedMessage> context)
+        {
+            Console.WriteLine("Compensating for CreditFailedMessage...");
+            var request = context.Message;
+
+            await _accountService.CreditFunds(request.SenderAccountNumber, request.Amount);
         }
     }
 }

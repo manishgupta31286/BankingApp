@@ -23,14 +23,24 @@ namespace BankingApp
         {
             var request = context.Message;
 
-            await _accountService.CreditFunds(request.SenderAccountNumber, request.Amount);
-
-            await _bus.Publish<FundsCreditedMessage>(new
+            try
             {
-                SenderAccountNumber = request.SenderAccountNumber,
-                RecipientAccountNumber = request.RecipientAccountNumber,
-                Amount = request.Amount
-            });
+                await _accountService.CreditFunds(request.RecipientAccountNumber, request.Amount);
+
+                await _bus.Publish<FundsCreditedMessage>(new FundsCreditedMessage(                
+                    request.SenderAccountNumber,
+                    request.RecipientAccountNumber,
+                    request.Amount
+                ));
+            }
+            catch (Exception ex)
+            {
+                await _bus.Publish<CreditFailedMessage>(new CreditFailedMessage(
+                    request.SenderAccountNumber,
+                    request.RecipientAccountNumber,
+                    request.Amount,
+                    ex.Message));
+            }
         }
     }
 }

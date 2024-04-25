@@ -8,7 +8,7 @@ Console.WriteLine("Hello, World!");
 
 TransferRequest request = new TransferRequest();
 request.SenderAccountNumber = "Sender1";
-request.RecipientAccountNumber = "Recipient1";
+request.RecipientAccountNumber = "Recipient2";
 request.Amount = 100;
 
 var busControl = Bus.Factory.CreateUsingInMemory(cfg =>

@@ -23,7 +23,7 @@ namespace BankingApp
 
         public async Task InitiateTransfer(TransferRequest request)
         {
-            var message=new TransferRequestMessage(request.SenderAccountNumber,request.RecipientAccountNumber,request.Amount);
+            var message = new TransferRequestMessage(request.SenderAccountNumber, request.RecipientAccountNumber, request.Amount);
 
             // Publish transfer request message to message bus
             await _bus.Publish<TransferRequestMessage>(message);
