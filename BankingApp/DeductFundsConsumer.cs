@@ -25,14 +25,11 @@ namespace BankingApp
 
             // Deduct funds from the sender's account
             await _accountService.DeductFunds(request.SenderAccountNumber, request.Amount);
-            
-            
-            await _bus.Publish<FundsDeductedMessage>(new
-            {
-                SenderAccountNumber = request.SenderAccountNumber,
-                RecipientAccountNumber = request.RecipientAccountNumber,
-                Amount = request.Amount
-            });            
+
+            await _bus.Publish<FundsDeductedMessage>(
+                new FundsDeductedMessage(request.SenderAccountNumber,
+                request.RecipientAccountNumber,
+                request.Amount));
         }
     }
 }
